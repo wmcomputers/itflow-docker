@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM --platform=linux/arm64 ubuntu:22.04
 
 LABEL dockerfile.version="v1.3" dockerfile.release-date="2023-02-04"
 
