@@ -14,9 +14,12 @@ echo "<Directory '/var/www/html'>
     SSLEngine on
     SSLCertificateKeyFile /etc/ssl/private/private.key
     SSLCertificateFile /etc/ssl/certs/public.pem
+    SSLCertificateChainFile /etc/ssl/certs/origin_ca_rsa_root.pem
 </VirtualHost>" > /etc/apache2/sites-available/000-default.conf
 
 sed -i "s/^Listen.*/Listen $ITFLOW_PORT/g" /etc/apache2/ports.conf
+
+git config --global --add safe.directory /var/www/html
 
 # if itflow is not downloaded, perform the download after the volume mounting process within dockerfile is complete.
 if [[ -f /var/www/html/index.php ]]; then 
@@ -25,8 +28,6 @@ if [[ -f /var/www/html/index.php ]]; then
 else
     git clone --branch $ITFLOW_REPO_BRANCH https://$ITFLOW_REPO /var/www/html
 fi
-
-git config --global --add safe.directory /var/www/html
 
 # Verify permissions of itflow git repository
 chown -R www-data:www-data /var/www/html
