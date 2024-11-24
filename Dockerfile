@@ -1,6 +1,6 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
-LABEL dockerfile.version="v1.3" dockerfile.release-date="2023-02-04"
+LABEL dockerfile.version="v2.0" dockerfile.release-date="2024-11-24"
 
 # Set up ENVs that will be utilized in compose file.
 ENV TZ Etc/UTC
@@ -33,11 +33,13 @@ RUN apt-get update && apt-get upgrade -y && apt-get clean
 RUN apt-get install -y \
     git\
     apache2\
-    php
+    php\
+    whois
 
 # Ubuntu quality of life installs
 RUN apt-get install -y \
     vim\
+    nano\
     cron\ 
     dnsutils\
     iputils-ping
@@ -48,14 +50,16 @@ RUN apt-get install -y \
     php-mysqli\
     php-curl\
     php-imap\
-    php-mailparse
+    php-mailparse\
+    php-gd\
+    php-mbstring
 
 RUN apt-get install -y \
-    libapache2-mod-php\
-    libapache2-mod-md
+    libapache2-mod-php
 
-# Enable md apache mod
-RUN a2enmod md
+# Enable php and ssl apache mod
+RUN a2enmod php8.3
+RUN a2enmod ssl
 
 # Set the work dir to the git repo.
 WORKDIR /var/www/html

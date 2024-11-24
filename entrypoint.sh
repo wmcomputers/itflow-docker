@@ -11,6 +11,9 @@ echo "<Directory '/var/www/html'>
     LogLevel $ITFLOW_LOG_LEVEL
     ErrorLog /var/log/apache2/error.log
     CustomLog /var/log/apache2/access.log combined
+    SSLEngine on
+    SSLCertificateKeyFile /etc/ssl/private/private.key
+    SSLCertificateFile /etc/ssl/certs/public.pem
 </VirtualHost>" > /etc/apache2/sites-available/000-default.conf
 
 sed -i "s/^Listen.*/Listen $ITFLOW_PORT/g" /etc/apache2/ports.conf
