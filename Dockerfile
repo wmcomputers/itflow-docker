@@ -9,7 +9,7 @@ ENV ITFLOW_NAME ITFlow
 
 ENV ITFLOW_URL demo.itflow.org
 
-ENV ITFLOW_PORT 8080
+ENV ITFLOW_PORT 8443
 
 ENV ITFLOW_REPO github.com/itflow-org/itflow
 
@@ -61,8 +61,14 @@ RUN apt-get install -y \
 RUN a2enmod php8.3
 RUN a2enmod ssl
 
-# Set the work dir to the git repo.
+# Set the work dir to the git repo. 
 WORKDIR /var/www/html
+
+# Edit php.ini file
+
+RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 500M/g' /etc/php/8.3/apache2/php.ini && \
+    sed -i 's/post_max_size = 8M/post_max_size = 500M/g' /etc/php/8.3/apache2/php.ini && \
+    sed -i 's/max_execution_time = 30/max_execution_time = 300/g' /etc/php/8.3/apache2/php.ini
 
 # Entrypoint
 # On every run of the docker file, perform an entrypoint that verifies the container is good to go.
