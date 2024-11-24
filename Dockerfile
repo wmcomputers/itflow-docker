@@ -3,24 +3,24 @@ FROM ubuntu:24.04
 LABEL dockerfile.version="v2.0" dockerfile.release-date="2024-11-24"
 
 # Set up ENVs that will be utilized in compose file.
-ENV TZ Etc/UTC
+ENV TZ=Etc/UTC
 
-ENV ITFLOW_NAME ITFlow
+ENV ITFLOW_NAME=ITFlow
 
-ENV ITFLOW_URL demo.itflow.org
+ENV ITFLOW_URL=demo.itflow.org
 
-ENV ITFLOW_PORT 8443
+ENV ITFLOW_PORT=8443
 
-ENV ITFLOW_REPO github.com/itflow-org/itflow
+ENV ITFLOW_REPO=github.com/itflow-org/itflow
 
-ENV ITFLOW_REPO_BRANCH master
+ENV ITFLOW_REPO_BRANCH=master
 
 # apache2 log levels: emerg, alert, crit, error, warn, notice, info, debug
-ENV ITFLOW_LOG_LEVEL warn
+ENV ITFLOW_LOG_LEVEL=warn
 
-ENV ITFLOW_DB_HOST itflow-db
+ENV ITFLOW_DB_HOST=itflow-db
 
-ENV ITFLOW_DB_PASS null
+ENV ITFLOW_DB_PASS=null
 
 # Set timezone from TZ ENV
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
