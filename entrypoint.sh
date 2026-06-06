@@ -60,5 +60,16 @@ fi
 service apache2 reload
 service apache2 stop
 
+# Create ITFlow cron log files with correct ownership
+touch /var/log/itflow_cron_mail_queue.log \
+      /var/log/itflow_cron_domain_refresher.log \
+      /var/log/itflow_cron_certificate_refresher.log \
+      /var/log/itflow_cron.log \
+      /var/log/itflow_cron_ticket_email_parser.log
+chown www-data:www-data /var/log/itflow_cron*.log
+
+# Start cron daemon for ITFlow scheduled tasks
+service cron start
+
 # Execute the command in the dockerfile's CMD
 exec "$@"

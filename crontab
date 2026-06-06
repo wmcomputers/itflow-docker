@@ -1,0 +1,8 @@
+# ITFlow cron jobs
+# Scripts moved from /scripts/cron_*.php to /cron/*.php in ITFlow 25.x+
+* * * * * www-data /usr/bin/php /var/www/html/cron/mail_queue.php >> /var/log/itflow_cron_mail_queue.log 2>&1
+0 0 * * * www-data /usr/bin/php /var/www/html/cron/domain_refresher.php >> /var/log/itflow_cron_domain_refresher.log 2>&1
+0 1 * * * www-data /usr/bin/php /var/www/html/cron/certificate_refresher.php >> /var/log/itflow_cron_certificate_refresher.log 2>&1
+0 2 * * * www-data /usr/bin/php /var/www/html/cron/cron.php >> /var/log/itflow_cron.log 2>&1
+* * * * * www-data /usr/bin/php /var/www/html/cron/ticket_email_parser.php >> /var/log/itflow_cron_ticket_email_parser.log 2>&1
+# don't remove the empty line at the end

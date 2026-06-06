@@ -1,6 +1,6 @@
 FROM ubuntu:24.04
 
-LABEL dockerfile.version="v2.3" dockerfile.release-date="2024-11-24"
+LABEL dockerfile.version="v2.4" dockerfile.release-date="2026-06-06"
 
 # Set up ENVs that will be utilized in compose file.
 ENV TZ=Etc/UTC
@@ -21,6 +21,8 @@ ENV ITFLOW_LOG_LEVEL=warn
 ENV ITFLOW_DB_HOST=itflow-db
 
 ENV ITFLOW_DB_PASS=null
+
+ENV ITFLOW_CRON_KEY=changeme
 
 # Set timezone from TZ ENV
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -45,14 +47,16 @@ RUN apt-get install -y \
     iputils-ping
 
 # Install & enable php extensions
-RUN apt-get install -y \ 
+RUN apt-get install -y \
     php-intl\
     php-mysqli\
     php-curl\
     php-imap\
     php-mailparse\
     php-gd\
-    php-mbstring
+    php-mbstring\
+    php-zip\
+    php-xml
 
 RUN apt-get install -y \
     libapache2-mod-php
@@ -69,6 +73,10 @@ WORKDIR /var/www/html
 RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 500M/g' /etc/php/8.3/apache2/php.ini && \
     sed -i 's/post_max_size = 8M/post_max_size = 500M/g' /etc/php/8.3/apache2/php.ini && \
     sed -i 's/max_execution_time = 30/max_execution_time = 300/g' /etc/php/8.3/apache2/php.ini
+
+# Crontab for ITFlow scheduled tasks (replaces separate itflow-cron container)
+COPY crontab /etc/cron.d/itflow-cron
+RUN chmod 0644 /etc/cron.d/itflow-cron
 
 # Entrypoint
 # On every run of the docker file, perform an entrypoint that verifies the container is good to go.
